@@ -10,11 +10,11 @@ class TensorBlock(QtWidgets.QLabel):
                            border: 1px solid black;""")
         self.setAlignment(QtCore.Qt.AlignCenter)
 
-        print(self.width())
+        print(self.x())
         print(self.height())
 
         # 4-tuple, points represent (x, y, left(-1) or N/A(0) or right(1), above(-1) or N/A(0) or below(1))
-        self.points = [(10, 0, -1, 0)]
+        self.points = [(-50, 0)]
         #self.draw_points()
 
     def resize(self, x, y):
@@ -43,18 +43,24 @@ class TensorBlock(QtWidgets.QLabel):
 
         pts = []
 
-        for x,y,horizontal,vertical in self.points:
-            new_x = cx + horizontal * (x + hwx)
-            new_y = cy + vertical * (y + hwy)
+        for x,y in self.points:
+            new_x = cx + x
+            new_y = cy + y
 
             pts.append( (new_x, new_y) )
 
         return pts
 
     def drawPoints(self, qp):
-        pen = QtGui.QPen(QtCore.Qt.red)
-        pen.setWidth(3)
-        qp.setPen(pen)
+        point_pen = QtGui.QPen(QtCore.Qt.red)
+        point_pen.setWidth(4)
+        line_pen = QtGui.QPen(QtCore.Qt.black)
+        line_pen.setWidth(1)
+        qp.setPen(point_pen)
 
+        cx, cy = self._center()
         for x,y in self.drawable_points():
-            qp.drawPoint(x, y)
+            qp.setPen(line_pen)
+            qp.drawLine(x,y,cx,cy)
+            qp.setPen(point_pen)
+            qp.drawPoint(x,y)

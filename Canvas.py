@@ -23,7 +23,9 @@ class Canvas(QtWidgets.QWidget):
     def paintEvent(self, e):
         qp = QtGui.QPainter()
         qp.begin(self)
-        self.drawPoints(qp)
+        #self.drawPoints(qp)
+        for t in self.tensors:
+            t.drawPoints(qp)
         self.update()
         qp.end()
 
@@ -64,7 +66,6 @@ class Canvas(QtWidgets.QWidget):
     def mouseMoveEvent(self, evt):
         if self.draggin_idx != -1:
             point = self._get_point(evt)
-            #self.points[self.draggin_idx] = point
             half_width = int( self.tensors[self.draggin_idx].width()/2 )
             half_height = int( self.tensors[self.draggin_idx].height()/2 )
             self.tensors[self.draggin_idx].move( point[0]-half_width, point[1]-half_height )
