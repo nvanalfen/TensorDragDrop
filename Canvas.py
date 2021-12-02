@@ -16,7 +16,7 @@ class Canvas(QtWidgets.QWidget):
         self.block.move(200,200)
         self.block.resize(50,50)
 
-        self.widgets = [ self.block ]
+        self.tensors = [ self.block ]
 
         self.points = [ (i*10,i*10) for i in range(50) ]
 
@@ -34,7 +34,7 @@ class Canvas(QtWidgets.QWidget):
         line_pen.setWidth(1)
         qp.setPen(point_pen)
 
-        for w in self.widgets:
+        for w in self.tensors:
             if isinstance(w, TensorBlock):
                 cx, cy = w._center()
                 for x,y in w.drawable_points():
@@ -49,8 +49,8 @@ class Canvas(QtWidgets.QWidget):
 
     def _inside(self, point):
         x,y = point
-        for i in range(len(self.widgets)):
-            w = self.widgets[i]
+        for i in range(len(self.tensors)):
+            w = self.tensors[i]
             if x >= w.x() and x <= (w.x()+w.width()) and y >= w.y() and y <= (w.y()+w.height()):
                 return i
         return -1
@@ -65,9 +65,9 @@ class Canvas(QtWidgets.QWidget):
         if self.draggin_idx != -1:
             point = self._get_point(evt)
             #self.points[self.draggin_idx] = point
-            half_width = int( self.widgets[self.draggin_idx].width()/2 )
-            half_height = int( self.widgets[self.draggin_idx].height()/2 )
-            self.widgets[self.draggin_idx].move( point[0]-half_width, point[1]-half_height )
+            half_width = int( self.tensors[self.draggin_idx].width()/2 )
+            half_height = int( self.tensors[self.draggin_idx].height()/2 )
+            self.tensors[self.draggin_idx].move( point[0]-half_width, point[1]-half_height )
             #self.widgets[self.draggin_idx].move( point[0], point[1] )
             self.update()
 
@@ -76,8 +76,8 @@ class Canvas(QtWidgets.QWidget):
             point = self._get_point(evt)
             #self.points[self.draggin_idx] = point
             #self.widgets[self.draggin_idx].move( point[0], point[1] )
-            half_width = int( self.widgets[self.draggin_idx].width()/2 )
-            half_height = int( self.widgets[self.draggin_idx].height()/2 )
-            self.widgets[self.draggin_idx].move( point[0]-half_width, point[1]-half_height )
+            half_width = int( self.tensors[self.draggin_idx].width()/2 )
+            half_height = int( self.tensors[self.draggin_idx].height()/2 )
+            self.tensors[self.draggin_idx].move( point[0]-half_width, point[1]-half_height )
             self.draggin_idx = -1
             self.update()
